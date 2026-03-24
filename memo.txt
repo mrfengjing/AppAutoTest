@@ -82,9 +82,18 @@ Starting debug of 00008020-000E28A622D2002E (D321AP, iPhone XS, iphoneos, arm64e
 ios-deploy --debug --bundle /Users/smwl/Library/Developer/Xcode/DerivedData/SMSDK-czxzzvlrnrphfxdfxtqkotwcntor/Build/Products/Debug-iphoneos/SMSDKDevApp.app
 ios-deploy --justlaunch --debug --bundle /Users/smwl/Library/Developer/Xcode/DerivedData/SMSDK-czxzzvlrnrphfxdfxtqkotwcntor/Build/Products/Debug-iphoneos/SMSDKDevApp.app
 
-
+brew install fastlane
 fastlane 实现了iOS签名 上传App Store  xcbuild等指令👍
 fastlane app_store_build_number
 fastlane team_id
 fastlane upload_to_app_store
 fastlane upload_to_app_store
+
+brew tap facebook/fb
+brew install idb-companion
+#查看设备 / 模拟器
+idb list-targets
+# 授权
+idb approve --udid 00008030-0002654A149B802E com.demo2026.com notification
+
+{add-media,approve,boot,clear-keychain,clone,companion,connect,contacts,crash,create,daemon,dap,debugserver,delete,delete-all,describe,disconnect,dsym,dylib,erase,file,focus,framework,get,install,instruments,kill,launch,list,list-apps,list-targets,log,open,record,screenshot,send-notification,set,set-location,shell,shutdown,simulate-memory-warning,terminate,ui,uninstall,video,record-video,video-stream,xctest,xctrace}
