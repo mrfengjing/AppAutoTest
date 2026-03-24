@@ -3,7 +3,8 @@ IPA_PATH=$1
 IPA_NAME=$(basename "$IPA_PATH")
 PROVISION_PATH="provision/demo_dev.mobileprovision"
 PROVISION_DECODED="provision/provision.plist"
-
+echo "IPA_PATH: $IPA_PATH IPA_NAME: $IPA_NAME"
+#security find-identity -v -s codesigning
 #IDENTIFY="iPhone Distribution: Zhong qihong (X5BBR46R2Q)"
 IDENTIFY="7A98965D9E9713CDAF26B9957D6ACC254FE34B97"
 #BUNDLE_ID="com.demo2026.com"
@@ -12,6 +13,11 @@ if ! [ -f "$IPA_PATH" ]; then
   exit 1
 fi
 
+# 查看已连接设备
+echo "已连接设备"
+ios-deploy -c
+
+#j解析描述文件中bundle
 security cms -D -i "$PROVISION_PATH" >"$PROVISION_DECODED"
 BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" "$PROVISION_DECODED" 2>/dev/null)
 BUNDLE_ID=$(echo "$BUNDLE_ID" | awk -F '.' '{for(i=2;i<=NF;i++){printf("%s.",$i)};print ""}' | sed 's/.$//')
@@ -26,10 +32,12 @@ cd "$WORKPLACE" || {
 echo "BUNDLE_ID: $BUNDLE_ID"
 [ -f "$IPA_NAME" ] || {
   echo "cp $IPA_PATH ..."
-  cp -v "$IPA_PATH" "$WORKPLACE"
+  cp -v "$IPA_PATH" .
 }
 echo "clean ..."
 rm -rf Payload Payload.zip Payload.ipa _floatsignTemp
+
+#解压ipa
 case "$IPA_NAME" in
 *.ipa)
   echo "unzip $IPA_NAME ..."
@@ -43,6 +51,8 @@ case "$IPA_NAME" in
   #  mv "Payload.zip" "Payload.ipa"
   ;;
 esac
+
+#签名和安装
 find . -name "*.app" -type d 2>/dev/null | while read -r f; do
   INFO_PLIST="$f/Info.plist"
   echo "clean $f/PlugIns ..."
@@ -56,7 +66,8 @@ find . -name "*.app" -type d 2>/dev/null | while read -r f; do
     APP_NAME=$(basename "$f" .app)
     ENTITLEMENTS_FILE="$APP_NAME.entitlements"
     echo "generate $ENTITLEMENTS_FILE ..."
-    /usr/libexec/PlistBuddy -x -c "Print :Entitlements" "../$PROVISION_DECODED" > "$ENTITLEMENTS_FILE"
+    /usr/libexec/PlistBuddy -x -c "Print :Entitlements" "../$PROVISION_DECODED" >"$ENTITLEMENTS_FILE"
+
     find "$f" -name "*.dylib" -exec codesign --remove-signature {} \; 2>/dev/null || true
     find "$f/Frameworks" -name "*.framework" -exec codesign --remove-signature {} \; 2>/dev/null || true
     find "$f/Frameworks" -name "*.framework" -type d 2>/dev/null | while read -r fwk; do
@@ -76,20 +87,20 @@ find . -name "*.app" -type d 2>/dev/null | while read -r f; do
     fi
     echo "重签 $f 完成!"
     codesign --verify --verbos "$f"
+
     echo "zip Payload ..."
     zip -r -q "Payload.zip" "Payload/"
     echo "mv Payload.zip Payload.ipa ..."
     mv "Payload.zip" "Payload.ipa"
-#    echo "重签 Payload.ipa ..."
-
-    #    security find-identity -v -s codesigning
-    #    codesign --force --sign "$IDENTIFY" "Payload.ipa" --preserve-metadata=identifier,entitlements,flags --timestamp=none
-#    codesign --verify --verbos "Payload.ipa"
+    #    echo "重签 Payload.ipa ..."
+    #    fastlane 内部签名流程和上面的codesign一致，输出的是ipa，没有.app
+    #    fastlane actions 查看更多指令
+    #    fastlane sigh resign Payload.ipa --signing_identity "$IDENTIFY" --provisioning_profile "../$PROVISION_PATH"
     #    echo "重签完成!"
 
-    #    fastlane sigh resign "Payload.ipa" --signing_identity "$IDENTIFY" --provisioning_profile "../$PROVISION_PATH"
     #    echo "安装$f ......"
     #    ios-deploy --debug --bundle "$f"
+    #    ios-deploy --bundle "$f"
   }
 done
 exit 0

@@ -1,0 +1,90 @@
+【S】环境配置
+brew install node ios-deploy
+npm install -g appium
+appium driver install xcuitest
+pip install Appium-Python-Client
+
+查看已连接的真机 UDID
+(.env) smwl@smwlfjMacBook-Pro AppAutoTest % ios-deploy -c --detect
+[....] Waiting up to 5 seconds for iOS device to be connected
+[....] Found 00008020-000E28A622D2002E (D321AP, iPhone XS, iphoneos, arm64e, 17.0, 21A329) a.k.a. '开发的iPhone XS' connected through USB.
+
+【Examples】
+The commands below assume that you have an app called my.app with bundle id bundle.id. Substitute where necessary.
+// deploy and debug your app to a connected device
+ios-deploy --debug --bundle my.app
+
+// deploy, debug and pass environment variables to a connected device
+ios-deploy --debug --envs DYLD_PRINT_STATISTICS=1 --bundle my.app
+
+// deploy and debug your app to a connected device, skipping any wi-fi connection (use USB)
+ios-deploy --debug --bundle my.app --no-wifi
+
+// deploy and launch your app to a connected device, but quit the debugger after
+ios-deploy --justlaunch --debug --bundle my.app
+
+// deploy and launch your app to a connected device, quit when app crashes or exits
+ios-deploy --noninteractive --debug --bundle my.app
+
+// deploy your app to a connected device using incremental installation
+ios-deploy --app_deltas /tmp --bundle my.app
+
+// Upload a file to your app's Documents folder
+ios-deploy --bundle_id 'bundle.id' --upload test.txt --to Documents/test.txt
+
+// Download your app's Documents, Library and tmp folders
+ios-deploy --bundle_id 'bundle.id' --download --to MyDestinationFolder
+
+// List the contents of your app's Documents, Library and tmp folders
+ios-deploy --bundle_id 'bundle.id' --list
+
+// deploy and debug your app to a connected device, uninstall the app first
+ios-deploy --uninstall --debug --bundle my.app
+
+// check whether an app by bundle id exists on the device (check return code `echo $?`)
+ios-deploy --exists --bundle_id com.apple.mobilemail
+
+// Download the Documents directory of the app *only*
+ios-deploy --download=/Documents --bundle_id my.app.id --to ./my_download_location
+
+// List ids and names of connected devices
+ios-deploy -c
+
+// Uninstall an app
+ios-deploy --uninstall_only --bundle_id my.bundle.id
+
+// list all bundle ids of all apps on your device
+ios-deploy --list_bundle_id
+
+// list the files in cameral roll, a.k.a /DCIM
+ios-deploy -f -l/DCIM
+
+// download the file in /DCIM
+ios-deploy -f -w/DCIM/100APPLE/IMG_001.jpg
+
+// remove the file /DCIM
+ios-deploy -f -R /DCIM/100APPLE/IMG_001.jpg
+
+// make directoly in /DCIM
+ios-deploy -f -D/DCIM/test
+
+// upload file to /DCIM
+ios-deploy -f -o/Users/ryan/Downloads/test.png -2/DCIM/test.png
+
+// get more properties of the bundle
+ios-deploy -B -j --key=UIFileSharingEnabled,CFBundlePackageType
+ios-deploy -B -j --key=UIFileSharingEnabled --key=CFBundlePackageType
+
+【issue】https://github.com/defold/defold/issues/8023
+Starting debug of 00008020-000E28A622D2002E (D321AP, iPhone XS, iphoneos, arm64e, 17.0, 21A329) a.k.a. '开发的iPhone XS' connected through USB...
+2026-03-20 10:04:13.118 ios-deploy[23622:957794] [ !! ] Unable to locate DeviceSupport directory with suffix 'DeveloperDiskImage.dmg'. This probably means you don't have Xcode installed, you will need to launch the app manually and logging output will not be shown!
+
+ios-deploy --debug --bundle /Users/smwl/Library/Developer/Xcode/DerivedData/SMSDK-czxzzvlrnrphfxdfxtqkotwcntor/Build/Products/Debug-iphoneos/SMSDKDevApp.app
+ios-deploy --justlaunch --debug --bundle /Users/smwl/Library/Developer/Xcode/DerivedData/SMSDK-czxzzvlrnrphfxdfxtqkotwcntor/Build/Products/Debug-iphoneos/SMSDKDevApp.app
+
+
+fastlane 实现了iOS签名 上传App Store  xcbuild等指令👍
+fastlane app_store_build_number
+fastlane team_id
+fastlane upload_to_app_store
+fastlane upload_to_app_store
