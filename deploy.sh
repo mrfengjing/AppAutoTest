@@ -101,6 +101,12 @@ find . -name "*.app" -type d 2>/dev/null | while read -r f; do
     #    echo "安装$f ......"
     #    ios-deploy --debug --bundle "$f"
     #    ios-deploy --bundle "$f"
+    #    ios-deploy --debug --bundle "$f"
+    #    ios-deploy --bundle "$f"
+     #    echo "安装 Payload.ipa ......"
+     ideviceinstaller  install Payload.ipa
+#    echo "安装 Payload.ipa 完成"
+
   }
 done
 exit 0

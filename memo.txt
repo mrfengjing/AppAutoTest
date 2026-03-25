@@ -101,3 +101,95 @@ idb approve --udid 00008030-0002654A149B802E com.demo2026.com notification
 https://developer.apple.com/library/archive/qa/qa1827/_index.html
 agvtool: Apple Generic Versioning Tool
 是 Xcode 自带的官方命令行工具，专门用来一键修改 iOS 项目的版本号（Version）和构建号（Build），不用手动点开 Info.plist 改，非常适合自动化、打包、发版
+
+[Appium] Appium 自动化测试框架原理介绍
+https://www.jianshu.com/p/c730251914b2
+
+instruments -s devices(instruments 已废弃) => xcrun xctrace list devices
+
+ideviceinstaller安装app 查看设备信息
+COMMANDS:
+  list                List installed apps. Options:
+        --user          List user apps only (this is the default)
+        --system        List system apps only
+        --all           List all types of apps
+        --xml           Print output as XML Property List
+        -a, --attribute ATTR  Specify attribute to return - see man page
+            (can be passed multiple times)
+        -b, --bundle-identifier BUNDLEID  Only query given bundle identifier
+            (can be passed multiple times)
+  install PATH        Install app from package file specified by PATH.
+                      PATH can also be a .ipcc file for carrier bundles.
+        -s, --sinf PATH  Pass an external SINF file
+        -m, --metadata PATH  Pass an external iTunesMetadata file
+  uninstall BUNDLEID  Uninstall app specified by BUNDLEID.
+  upgrade PATH        Upgrade app from package file specified by PATH.
+
+LEGACY COMMANDS (non-functional with iOS 7 or later):
+  archive BUNDLEID    Archive app specified by BUNDLEID. Options:
+        --uninstall     Uninstall the package after making an archive
+        --app-only      Archive application data only
+        --docs-only     Archive documents (user data) only
+        --copy=PATH     Copy the app archive to directory PATH when done
+        --remove        Only valid when copy=PATH is used: remove after copy
+  restore BUNDLEID    Restore archived app specified by BUNDLEID
+  list-archives       List archived apps. Options:
+        --xml           Print output as XML Property List
+  remove-archive BUNDLEID    Remove app archive specified by BUNDLEID
+
+OPTIONS:
+  -u, --udid UDID     Target specific device by UDID
+  -n, --network       Connect to network device
+  -w, --notify-wait   Wait for app installed/uninstalled notification
+                      before reporting success of operation
+  -h, --help          Print usage information
+  -d, --debug         Enable communication debugging
+  -v, --version       Print version information
+
+
+ Show information about a connected device.
+
+ideviceinfo:查看设备信息
+(.env) smwl@172-15-30-213 AppAutoTest % ideviceinfo -h
+OPTIONS:
+  -u, --udid UDID       target specific device by UDID
+  -n, --network         connect to network device
+  -s, --simple          use simple connection to avoid auto-pairing with device
+  -q, --domain NAME     set domain of query to NAME. Default: None
+  -k, --key NAME        only query key specified by NAME. Default: All keys.
+  -x, --xml             output information in XML property list format
+  -h, --help            prints usage information
+  -d, --debug           enable communication debugging
+  -v, --version         prints version information
+
+idevicesyslog：查看手机实时日志
+idevicecrashreport：获取手机端崩溃报告
+idevicescreenshot：截屏
+idevicediagnostics restart：重启
+
+IOS + Appium自动化环境搭建教程
+https://www.jianshu.com/p/86e0a70fe059
+
+最新版WebDriverAgent
+git@github.com:mrfengjing/WebDriverAgent.git
+WebDriverAgent WebDriverAgentRunner test到真机成功后
+Test Case '-[UITestingUITests testRunner]' started.
+    t =     0.00s Start Test at 2026-03-25 14:50:43.882
+    t =     0.01s Set Up
+Built at Mar 25 2026 14:42:38
+ServerURLHere->http://172.15.31.216:8100<-ServerURLHere
+将http://172.15.31.216:8100换成http://localhost:8100访问测试机
+http://localhost:8100/status
+https://github.com/facebookarchive/WebDriverAgent/wiki/Queries
+appium-desktop下载
+https://github.com/appium/appium-desktop/releases/tag/v1.22.3-4
+https://github.com/appium/appium-inspector
+https://github.com/appium/appium-inspector/releases
+
+生成 Brewfile
+brew bundle dump
+从Brewfile 恢复安装
+brew bundle
+
+npm install
+会自动读取 package.json 和 package-lock.json，安装完全一致的依赖。
