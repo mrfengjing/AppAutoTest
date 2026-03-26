@@ -190,6 +190,9 @@ https://github.com/appium/appium-desktop/releases/tag/v1.22.3-4
 https://github.com/appium/appium-inspector
 https://github.com/appium/appium-inspector/releases
 
+电脑浏览器无法访问http://localhost:8100/status 解决办法
+iproxy 8100 8100
+
 生成 Brewfile
 brew bundle dump
 从Brewfile 恢复安装
@@ -197,3 +200,9 @@ brew bundle
 
 npm install
 会自动读取 package.json 和 package-lock.json，安装完全一致的依赖。
+
+Appium iOS、Android自动化测试+性能检测
+https://www.jianshu.com/p/36b44102c9ba
+
+appium iOS自动化时连接已启动的wda，跳过自动构建
+https://www.jianshu.com/p/d587843c1fe6
