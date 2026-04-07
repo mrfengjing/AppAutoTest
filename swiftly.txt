@@ -1,0 +1,10 @@
+swiftly swift工具链管理工具
+
+install
+https://www.swift.org/install/macos/
+
+swiftly install 5.5.1
+Apple Swift version 5.5.1 (swift-5.5.1-RELEASE)
+Target: x86_64-apple-macosx15.0
+
+Swiftly不仅能轻松切换版本，还支持在项目根目录放一个.swift-version文件，实现项目级别的版本锁定，非常方便团队协作

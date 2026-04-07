@@ -1,0 +1,176 @@
+pip3 install frida-tools objection
+npm install -g applesign
+git clone https://github.com/Tyilo/insert_dylib && cd insert_dylib &&xcodebuild && cp build/Release/insert_dylib /usr/local/bin/insert_dylib
+
+查看设备已连接的 App 列表
+frida-ps -U
+
+https://github.com/sensepost/objection/wiki/Using-objection
+
+(.env) smwl@172-15-30-213 AppAutoTest % objection --help
+Usage: objection [OPTIONS] COMMAND [ARGS]...
+
+       _   _         _   _
+   ___| |_|_|___ ___| |_|_|___ ___
+  | . | . | | -_|  _|  _| | . |   |
+  |___|___| |___|___|_| |_|___|_|_|
+        |___|(object)inject(ion)
+
+       Runtime Mobile Exploration
+          by: @leonjza from @sensepost
+
+Options:
+  -N, --network            Connect using a network connection instead of USB.
+  -h, --host TEXT          [default: 127.0.0.1]
+  -P, --port INTEGER       [default: 27042]
+  -ah, --api-host TEXT     [default: 127.0.0.1]
+  -ap, --api-port INTEGER  [default: 8888]
+  -n, --name TEXT          Name or bundle identifier to attach to.
+  -S, --serial TEXT        A device serial to connect to.
+  -d, --debug              Enable debug mode with verbose output.
+  -s, --spawn              Spawn the target.
+  -p, --no-pause           Resume the target immediately.
+  -f, --foremost           Use the current foremost application.
+  --debugger               Enable the Chrome debug port.
+  --uid TEXT               Specify the uid to run as (Android only).
+  --help                   Show this message and exit.
+
+Commands:
+  api       Start the objection API server in headless mode.
+  patchapk  Patch an APK with the frida-gadget.so.
+  patchipa  Patch an IPA with the FridaGadget dylib.
+  run       Run a single objection command.
+  signapk   Zipalign and sign an APK with the objection key.
+  start     Start a new session
+  version   Prints the current version and exits.
+
+  Objection使用(Android)
+  https://www.jianshu.com/p/5a100838ee5f
+
+  objection相关命令记录(Android)
+  https://www.jianshu.com/p/6d8e150950e4
+
+
+  【issue】
+  (.env) smwl@172-15-30-213 AppAutoTest % objection patchipa --source ./workplace/xq.ipa --codesign-signature 7A98965D9E9713CDAF26B9957D6ACC254FE34B97
+/Users/smwl/Desktop/Projects/AppAutoTest/.env/lib/python3.13/site-packages/click/core.py:1223: UserWarning: The parameter -b is used more than once. Remove its duplicate as parameters should be unique.
+  parser = self.make_parser(ctx)
+/Users/smwl/Desktop/Projects/AppAutoTest/.env/lib/python3.13/site-packages/click/core.py:1216: UserWarning: The parameter -b is used more than once. Remove its duplicate as parameters should be unique.
+  self.parse_args(ctx, args)
+Traceback (most recent call last):
+  File "/Users/smwl/Desktop/Projects/AppAutoTest/.env/bin/objection", line 7, in <module>
+    sys.exit(cli())
+             ~~~^^
+  File "/Users/smwl/Desktop/Projects/AppAutoTest/.env/lib/python3.13/site-packages/click/core.py", line 1485, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/smwl/Desktop/Projects/AppAutoTest/.env/lib/python3.13/site-packages/click/core.py", line 1406, in main
+    rv = self.invoke(ctx)
+  File "/Users/smwl/Desktop/Projects/AppAutoTest/.env/lib/python3.13/site-packages/click/core.py", line 1873, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/smwl/Desktop/Projects/AppAutoTest/.env/lib/python3.13/site-packages/click/core.py", line 1269, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/smwl/Desktop/Projects/AppAutoTest/.env/lib/python3.13/site-packages/click/core.py", line 824, in invoke
+    return callback(*args, **kwargs)
+  File "/Users/smwl/Desktop/Projects/AppAutoTest/.env/lib/python3.13/site-packages/objection/console/cli.py", line 283, in patchipa
+    patch_ios_ipa(**locals())
+    ~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/Users/smwl/Desktop/Projects/AppAutoTest/.env/lib/python3.13/site-packages/objection/commands/mobile_packages.py", line 44, in patch_ios_ipa
+    github_version = github.get_latest_version()
+  File "/Users/smwl/Desktop/Projects/AppAutoTest/.env/lib/python3.13/site-packages/objection/utils/patchers/github.py", line 52, in get_latest_version
+    self.gadget_version = self._call(self.GITHUB_LATEST_RELEASE)['tag_name']
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'tag_name'
+
+：=》失败原因 objection 工具无法从 GitHub API 获取最新 frida-gadget 版本 导致的错误
+：=》解决方案 切换Clash 节点
+
+(.env) smwl@172-15-30-213 AppAutoTest % objection patchipa --source ./workplace/xq.ipa --codesign-signature 7A98965D9E9713CDAF26B9957D6ACC254FE34B97
+/Users/smwl/Desktop/Projects/AppAutoTest/.env/lib/python3.13/site-packages/click/core.py:1223: UserWarning: The parameter -b is used more than once. Remove its duplicate as parameters should be unique.
+  parser = self.make_parser(ctx)
+/Users/smwl/Desktop/Projects/AppAutoTest/.env/lib/python3.13/site-packages/click/core.py:1216: UserWarning: The parameter -b is used more than once. Remove its duplicate as parameters should be unique.
+  self.parse_args(ctx, args)
+Using latest Github gadget version: 17.9.1
+Patcher will be using Gadget version: 17.9.1
+No provision file specified, searching for one...
+Found provision file /Users/smwl/Library/Developer/Xcode/DerivedData/JSQ-fmslbhegblrtakfpzsgeumuukmap/Build/Products/Debug-iphoneos/dadone.app/embedded.mobileprovision expiring in 361 days, 8:30:49.257902
+Found provision file /Users/smwl/Library/Developer/Xcode/DerivedData/FaceBookDemo-cipsfdtnwxtmbgeatdoacdmjnzgi/Build/Products/Debug-iphoneos/FaceBookDemo.app/embedded.mobileprovision expiring in 315 days, 15:52:51.257902
+Found a valid provisioning profile
+Mobile provision bundle identifier is: dadong.smartlock.com
+Working with app: SMSDKDevApp.app
+Bundle identifier is: com.demo2026.com
+Codesigning 1 .dylib's with signature 7A98965D9E9713CDAF26B9957D6ACC254FE34B97
+Code signing: FridaGadget.dylib
+Creating new archive with patched contents...
+Codesigning patched IPA...
+Warning: Orphaned library not signed, try -a: /var/folders/2q/qrg1sm_d4nq8mrq2w54gqqh40000gn/T/xq-frida.ipa.58842b9a-165a-4abe-af51-4188bc3e7db4/Payload/SMSDKDevApp.app/Frameworks/SMSDK.framework/Frameworks/QYSDK.framework/QYSDK
+
+Copying final ipa from /var/folders/2q/qrg1sm_d4nq8mrq2w54gqqh40000gn/T/xq-frida-codesigned.ipa to current directory...
+Cleaning up temp files...
+
+会自动把xq-frida-codesigned.ipa拷贝到当前目录
+
+
+
+// 查看签名证书
+  security find-identity -p codesigning -v
+安装到手机: ideviceinstaller install xq-frida-codesigned.ipa
+
+//重签ipa
+【不要用这种方式 证书匹配有问题】
+  objection patchipa --source workplace/小七.ipa --codesign-signature 71A84E40A8AE439BD4580F3D82F259B60DD24DB7
+【用这种】
+objection patchipa\
+    --source workplace/xq.ipa\
+    --codesign-signature 7A98965D9E9713CDAF26B9957D6ACC254FE34B97\
+    --provision-file provision/demo_dev.mobileprovision\
+    --bundle-id com.demo2026.com
+
+objection patchipa\
+    --source /Users/smwl/Desktop/Projects/ipas/SMSDKDevApp 2026-04-07 10-44-10/xq.ipa\
+    --codesign-signature 7A98965D9E9713CDAF26B9957D6ACC254FE34B97\
+    --provision-file provision/demo_dev.mobileprovision\
+    --bundle-id com.demo2026.com
+
+
+
+(.env) smwl@172-15-30-213 AppAutoTest % objection patchipa --help
+Options:
+  -s, --source TEXT              The source IPA to patch  [required]
+  -V, --gadget-version TEXT      The gadget version to use. If not specified,
+                                 the latest version will be used.
+  -c, --codesign-signature TEXT  Codesigning Identity to use. Get it with:
+                                 `security find-identity -p codesigning -v`
+                                 [required]
+  -P, --provision-file TEXT      The .mobileprovision file to use in the
+                                 patched .ipa
+  -b, --binary-name TEXT         Name of the Mach-O binary in the IPA (used to
+                                 patch with Frida)
+  -k, --skip-cleanup             Do not clean temporary files once finished.
+  -p, --pause                    Pause the patcher before rebuilding the IPA.
+  -z, --unzip-unicode            Unzip IPA containing Unicode characters.
+  -C, --gadget-config TEXT       The gadget configuration file to use. Refer
+                                 to https://frida.re/docs/gadget/ for more
+                                 information.
+  -l, --script-source TEXT       A script file to use with the the "path"
+                                 config type. Remember that use the name of
+                                 this file in your "path". It will be next to
+                                 the config.
+  -b, --bundle-id TEXT           The bundleid to set when codesigning the IPA
+  --help                         Show this message and exit.
+
+  【issue】
+   idevicedebug -d run com.demo2026.com
+working_directory: /private/var/mobile/Containers/Data/Application/C51F4BBC-1313-4EA0-9129-24F0915FD747
+
+Could not start com.apple.debugserver!
+Please make sure to mount the developer disk image first:
+  1) Get the iOS version from `ideviceinfo -k ProductVersion`.
+  2) Find the matching iPhoneOS DeveloperDiskImage.dmg files.
+  3) Run `ideviceimagemounter` with the above path
+
+(.env) smwl@172-15-30-213 AppAutoTest % ideviceinfo -k ProductVersion
+17.0
+原因：电脑没有安装17.0 image，找一个低版本手机试试
