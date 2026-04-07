@@ -211,3 +211,6 @@ workplace
 !.env
 !env/
 !requirements.txt
+
+*.ipa
+com.demo2026.com
