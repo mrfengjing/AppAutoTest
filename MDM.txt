@@ -1,0 +1,26 @@
+重启设备
+
+三、企业 / MDM 设备：远程重启（苹果官方）
+用于公司监管设备（Supervised），通过 MDM 服务器下发 RestartDeviceCommand 命令：
+xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Command</key>
+    <dict>
+        <key>RequestType</key>
+        <string>RestartDevice</string>
+    </dict>
+</dict>
+</plist>
+
+四、Shell 命令（Mac 控制 iPhone）
+用 libimobiledevice（需在 Mac 安装）：
+bash
+运行
+# 重启
+idevicediagnostics restart -u [设备UDID]
+
+# 关机
+idevicediagnostics shutdown -u [设备UDID]

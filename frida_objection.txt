@@ -123,7 +123,7 @@ Cleaning up temp files...
   objection patchipa --source workplace/小七.ipa --codesign-signature 71A84E40A8AE439BD4580F3D82F259B60DD24DB7
 【用这种】
 objection patchipa\
-    --source workplace/xq.ipa\
+    --source workplace/小七.ipa\
     --codesign-signature 7A98965D9E9713CDAF26B9957D6ACC254FE34B97\
     --provision-file provision/demo_dev.mobileprovision\
     --bundle-id com.demo2026.com
@@ -174,3 +174,18 @@ Please make sure to mount the developer disk image first:
 (.env) smwl@172-15-30-213 AppAutoTest % ideviceinfo -k ProductVersion
 17.0
 原因：电脑没有安装17.0 image，找一个低版本手机试试
+
+
+frida-ps -U
+只列 正在运行的进程（含系统 + App）Frida。
+frida-ps -Ua
+列 所有已安装应用（含未运行）Frida。
+frida-ps -Uai
+列 已安装应用 + 包名（Identifier）Frida。
+
+设备真的连上了吗？
+frida-ls-devices
+
+frida运行js脚本
+frida -U -f com.demo2026.com keychain_dump.js --no-pause
+=》Failed to attach: need Gadget to attach on jailed iOS; its default location is: /Users/smwl/.cache/frida/gadget-ios.dylib
